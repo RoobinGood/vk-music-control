@@ -1,0 +1,19 @@
+{
+  "name": "vk-music-control",
+  "authors": [
+    "roobingood <a.robingood@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "font-awesome": "~4.5.0",
+    "anticipant": "*",
+    "requirejs": "~2.1.22",
+    "underscore": "~1.8.3"
+  }
+}

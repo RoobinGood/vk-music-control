@@ -1,0 +1,16 @@
+body {
+	font-size: 100%;
+	color: #222;
+	width: 250px;
+	background-color: #efefef;
+	font-weight: 300;
+	margin: 0px;
+}
+
+
+/* COMMON CLASSES */
+
+.fullWidth {
+	width: 100%;
+	box-sizing: border-box;
+}
