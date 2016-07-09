@@ -5,16 +5,46 @@
 	"description": "Управление плеером ВКонтакте через расширение и горячие клавиши",
 	"version": "0.0.1",
 
-	"browser_action": {
+	/*"browser_action": {
 		"default_icon": "static/icon.png",
 		"default_popup": "popup.html"
-	},
+	},*/
 	"background": {
 		"page": "background.html"
 	},
 	
 	"permissions": [
-		"https://new.vk.com/"
+		"https://new.vk.com/*",
+		"tabs"
 	],
-	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+
+	"content_scripts": [{
+		"matches": ["https://new.vk.com/*"],
+		"js": ["js/vkScript.js"]
+	}],
+
+	"commands": {
+		"play": {
+			"suggested_key": {
+				"default": "Shift+Alt+M"
+			},
+			"description": "Play/pause",
+			"global": true
+		},
+		"prev": {
+			"suggested_key": {
+				"default": "Shift+Alt+Comma"
+			},
+			"description": "Previous",
+			"global": true
+		},
+		"next": {
+			"suggested_key": {
+				"default": "Shift+Alt+Period"
+			},
+			"description": "Next",
+			"global": true
+		}
+	}
 }
