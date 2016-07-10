@@ -5,6 +5,9 @@ In progress...
 
 
 TODO:
+
 * handle situation with multiple tabs
+
 * popup with player and track info
+
 * show notification with track info

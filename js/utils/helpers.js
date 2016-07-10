@@ -3,7 +3,7 @@ define('helpers', [
 ], function(_) {
 
 	var showNotification = function(title, message) {
-		chrome.notifications.create("new_series_" + Math.ceil(Math.random()*100500).toString(), {
+		chrome.notifications.create("track_" + Math.ceil(Math.random()*100500).toString(), {
 	        type: 'basic',
 			iconUrl: 'static/icon.png',
 	        title: title,
@@ -15,7 +15,7 @@ define('helpers', [
 	            chrome.notifications.clear(notificationId, function(wasCleared) {
 	                console.log(wasCleared);
 	            });
-	        }, 1005000);
+	        }, 5000);
 	    });
 	};
 
