@@ -19,6 +19,10 @@ define('helpers', [
 	    });
 	};
 
+	/*
+	* String formatter to substitute data to pattern string.
+	* Use `{keyName}` to insert data from parameters.
+	*/
 	var formatString = function(pattern, insertedData) {
 		var resultString = pattern;
 		_(pattern.match(/{[a-zA-Z\d\-\_\.]+}/g)).each(function(rawKey) {

@@ -6,20 +6,47 @@ require([
 
 	var sendCommand = function(command, callback) {
 		callback = callback || _.noop();
-
-		chrome.tabs.query({
-			url: 'https://new.vk.com/*'
-		}, function(tabs) {
+		var targetUrl = 'https://new.vk.com/*';
+		var sendMessage = function(params, callback) {
 			chrome.tabs.sendMessage(
-				tabs[0].id,
+				params.id,
 				{
-					command: command,
+					command: params.command,
 					type: 'request'
 				},
 				callback
 			);
+		};
+
+		// search vk tab with playing music
+		chrome.tabs.query({
+			url: targetUrl,
+			audible: true
+		}, function(tabs) {
+			if (tabs && tabs.length) {
+				// if there is playing vk tab
+				sendMessage({
+					id: tabs[0].id,
+					command: command
+				}, callback);
+			} else {
+				// search any vk tab
+				chrome.tabs.query({
+					url: targetUrl
+				}, function(tabs) {
+					if (!tabs || tabs.length === 0) {
+						return callback();
+					}
+
+					sendMessage({
+						id: tabs[0].id,
+						command: command
+					}, callback);
+				});
+			}
 		});
 	};
+
 
 	var defaultCommandHandler = function(command) {
 		sendCommand(command)
