@@ -55,3 +55,27 @@ chrome.runtime.onMessage.addListener(
 		}
 	}
 );
+
+// watch over current track
+window.onload = function() {
+	var currentTrack = player.getTrack();
+
+	setInterval(function() {
+		var track = player.getTrack();
+		if (track.artist !== currentTrack.artist ||
+			track.track !== currentTrack.track) {
+
+			chrome.runtime.sendMessage(
+				chrome.runtime.id,
+				{
+					command: 'info',
+					type: 'response',
+					data: track
+				}
+			);
+
+			console.log(track);
+			currentTrack = track;
+		}
+	}, 300);
+};

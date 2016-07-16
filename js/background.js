@@ -70,4 +70,16 @@ require([
 		commands[command](command);
 	});
 
+	chrome.runtime.onMessage.addListener(
+		function(request, sender, sendResponse) {
+			console.log('receive:', request.command);
+
+			if (request.command === 'info') {
+				helpers.showNotification(
+					request.data.artist, request.data.track
+				);
+			}
+		}
+	);
+
 });
