@@ -1,0 +1,8 @@
+v0.0.2
+- popup with controls
+- add/remove track from collection
+
+v0.0.1 - CURRENT
+* play/pause, next, prev and info hotkeys
+* notification on track change
+* activate chrome tab with current vk page on notification click
