@@ -1,6 +1,6 @@
 require([
-	'underscore', 'helpers'
-], function(_, helpers) {
+	'underscore', 'notificationManager'
+], function(_, NotificationManager) {
 
 	console.log("background script");
 
@@ -58,9 +58,10 @@ require([
 		prev: defaultCommandHandler,
 		info: function(command) {
 			sendCommand(command, function(response) {
-				helpers.showNotification(
-					response.data.artist, response.data.track
-				);
+				NotificationManager.show({
+					title: response.data.artist,
+					message: response.data.track
+				});
 			});
 		}
 	};
@@ -75,9 +76,10 @@ require([
 			console.log('receive:', request.command);
 
 			if (request.command === 'info') {
-				helpers.showNotification(
-					request.data.artist, request.data.track
-				);
+				NotificationManager.show({
+					title: request.data.artist,
+					message: request.data.track
+				});
 			}
 		}
 	);
