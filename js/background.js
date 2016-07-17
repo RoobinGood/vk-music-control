@@ -44,4 +44,12 @@ require([
 		}
 	);
 
+
+	// handle notification click
+	chrome.notifications.onClicked.addListener(function() {
+		helpers.getCurrentTab(function(tabId) {
+			console.log('redirect to', tabId);
+			chrome.tabs.update(tabId, {selected: true});
+		});
+	});
 });

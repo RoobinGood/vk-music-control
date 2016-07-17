@@ -4,7 +4,6 @@ define('helpers', [
 
 	var sendCommand = function(command, callback) {
 		callback = callback || _.noop();
-		var targetUrl = 'https://new.vk.com/*';
 		var sendMessage = function(params, callback) {
 			chrome.tabs.sendMessage(
 				params.id,
@@ -16,6 +15,22 @@ define('helpers', [
 			);
 		};
 
+		getCurrentTab(function(tabId) {
+			if (!tabId) {
+				return callback(null);
+			}
+
+			sendMessage({
+				id: tabId,
+				command: command
+			}, callback);
+		});
+	};
+
+	var getCurrentTab = function(callback) {
+		callback = callback || _.noop;
+		var targetUrl = 'https://new.vk.com/*';
+
 		// search vk tab with playing music
 		chrome.tabs.query({
 			url: targetUrl,
@@ -23,34 +38,29 @@ define('helpers', [
 		}, function(tabs) {
 			if (tabs && tabs.length) {
 				// if there is playing vk tab
-				sendMessage({
-					id: tabs[0].id,
-					command: command
-				}, callback);
+				callback(tabs[0].id);
 			} else {
 				// search any vk tab
 				chrome.tabs.query({
 					url: targetUrl
 				}, function(tabs) {
 					if (!tabs || tabs.length === 0) {
-						return callback();
+						return callback(null);
 					}
 
-					sendMessage({
-						id: tabs[0].id,
-						command: command
-					}, callback);
+					callback(tabs[0].id);
 				});
 			}
 		});
 	};
 
 	var defaultCommandHandler = function(command) {
-		sendCommand(command)
+		sendCommand(command);
 	};
 
 	return {
 		sendCommand: sendCommand,
-		defaultCommandHandler: defaultCommandHandler
+		defaultCommandHandler: defaultCommandHandler,
+		getCurrentTab: getCurrentTab
 	};
 });
