@@ -5,6 +5,8 @@ define('notificationManager', [
 	var NotificationManager = function() {
 		var self = this;
 
+		var notificationFields = ['title', 'message', 'iconUrl'];
+
 		this.currentNotification = {
 			id: null,
 			data: null
@@ -36,7 +38,7 @@ define('notificationManager', [
 			_(params).defaults(this.defaultParams);
 
 			if (_.isEqual(this.currentNotification.data,
-				_(params).pick('title', 'message', 'iconUrl'))
+				_(params).pick(notificationFields))
 			) {
 				return callback(null);
 			}
@@ -51,19 +53,14 @@ define('notificationManager', [
 		};
 
 		var _create = function(params, callback) {
-			_(params).defaults({
-				duration: this.duration
-			});
-
-			var notificationId = "notification_" +
-				Math.ceil(Math.random()*100500).toString();
+			var notificationId = _.uniqueId('notification_');
 
 			var notificationParams = _.chain({
 				type: 'basic',
 				priority: 1,
 				buttons: []
 			}).extend(
-				_(params).pick('title', 'message', 'iconUrl')
+				_(params).pick(notificationFields)
 			).value();
 
 			chrome.notifications.create(
@@ -72,7 +69,7 @@ define('notificationManager', [
 				function() {
 					self.currentNotification.id = notificationId;
 					self.currentNotification.data = _(notificationParams).pick(
-						'title', 'message', 'iconUrl'
+						notificationFields
 					);
 
 					setTimeout(function() {
@@ -81,7 +78,7 @@ define('notificationManager', [
 						}
 					}, params.duration);
 
-					callback();
+					callback(self.currentNotification);
 				}
 			);
 		};

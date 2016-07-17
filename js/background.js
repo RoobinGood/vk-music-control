@@ -1,64 +1,22 @@
 require([
-	'underscore', 'notificationManager'
-], function(_, NotificationManager) {
+	'underscore', 'notificationManager', 'helpers'
+], function(_, notificationManager, helpers) {
 
 	console.log("background script");
 
-	var sendCommand = function(command, callback) {
-		callback = callback || _.noop();
-		var targetUrl = 'https://new.vk.com/*';
-		var sendMessage = function(params, callback) {
-			chrome.tabs.sendMessage(
-				params.id,
-				{
-					command: params.command,
-					type: 'request'
-				},
-				callback
-			);
-		};
-
-		// search vk tab with playing music
-		chrome.tabs.query({
-			url: targetUrl,
-			audible: true
-		}, function(tabs) {
-			if (tabs && tabs.length) {
-				// if there is playing vk tab
-				sendMessage({
-					id: tabs[0].id,
-					command: command
-				}, callback);
-			} else {
-				// search any vk tab
-				chrome.tabs.query({
-					url: targetUrl
-				}, function(tabs) {
-					if (!tabs || tabs.length === 0) {
-						return callback();
-					}
-
-					sendMessage({
-						id: tabs[0].id,
-						command: command
-					}, callback);
-				});
-			}
-		});
-	};
-
-
-	var defaultCommandHandler = function(command) {
-		sendCommand(command)
-	};
-
+	// handle hotkey commands
 	var commands = {
-		play: defaultCommandHandler,
-		next: defaultCommandHandler,
-		prev: defaultCommandHandler,
-		info: function(command) {
-			sendCommand(command, function(response) {
-				NotificationManager.show({
+		play: helpers.defaultCommandHandler,
+		next: helpers.defaultCommandHandler,
+		prev: helpers.defaultCommandHandler,
+		info: function() {
+			helpers.sendCommand('info', function(response) {
+				console.log(response);
+				if (!response.data) {
+					return;
+				}
+
+				notificationManager.show({
 					title: response.data.artist,
 					message: response.data.track
 				});
@@ -71,12 +29,14 @@ require([
 		commands[command](command);
 	});
 
+
+	// handle track change message from vk tab
 	chrome.runtime.onMessage.addListener(
 		function(request, sender, sendResponse) {
 			console.log('receive:', request.command);
 
 			if (request.command === 'info') {
-				NotificationManager.show({
+				notificationManager.show({
 					title: request.data.artist,
 					message: request.data.track
 				});

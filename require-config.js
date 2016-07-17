@@ -5,19 +5,19 @@ require.config({
 		'notificationManager': 'js/utils/notificationManager',
 		
 		// bower_components
-		'jquery': 'bower_components/jquery/dist/jquery',
+		// 'jquery': 'bower_components/jquery/dist/jquery',
 		'underscore': 'bower_components/underscore/underscore-min',
-		'anticipant': 'bower_components/anticipant/lib/anticipant',
+		// 'anticipant': 'bower_components/anticipant/lib/anticipant',
 	},
 	shim: {
-		'jquery':{
-			exports:'$'
-		},
+		// 'jquery':{
+		// 	exports:'$'
+		// },
 		'underscore':{
 			exports:'_'
 		},
-		'anticipant':{
-			exports:'anticipant'
-		}
+		// 'anticipant':{
+		// 	exports:'anticipant'
+		// }
 	}
 });

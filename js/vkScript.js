@@ -14,6 +14,8 @@ var Player = function() {
 		var buttonEls = document.getElementsByClassName(this.buttons[button]);
 		if (buttonEls && buttonEls.length) {
 			buttonEls[0].click();
+		} else {
+			console.log('Button', button, 'unavailable');
 		}
 	};
 
@@ -23,16 +25,20 @@ var Player = function() {
 
 	this.getTrack = function() {
 		var titleEls = document.getElementsByClassName('top_audio_player_title');
-		if (titleEls && titleEls.length) {
-			var title = titleEls[0].textContent;
-			var separator = ' – ';
 
-			var artist = title.split(separator)[0];
-			var track = title.substr(artist.length + separator.length);
-			return {
-				artist: artist,
-				track: track
-			}
+		if (!titleEls || !titleEls.length || !titleEls[0].textContent.length) {
+			return null;
+		}
+
+		var title = titleEls[0].textContent;
+		var separator = ' – ';
+
+		var artist = title.split(separator)[0];
+		var track = title.substr(artist.length + separator.length);
+
+		return {
+			artist: artist,
+			track: track
 		}
 	}
 };
@@ -62,9 +68,11 @@ window.onload = function() {
 
 	setInterval(function() {
 		var track = player.getTrack();
-		if (track.artist !== currentTrack.artist ||
-			track.track !== currentTrack.track) {
-
+		if (track !== currentTrack && (
+			currentTrack === null ||
+			track.artist !== currentTrack.artist ||
+			track.track !== currentTrack.track
+		)) {
 			chrome.runtime.sendMessage(
 				chrome.runtime.id,
 				{
