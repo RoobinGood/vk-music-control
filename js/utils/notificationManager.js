@@ -15,7 +15,7 @@ define('notificationManager', [
 		this.defaultParams = {
 			title: 'Unknown',
 			message: 'Unknown',
-			iconUrl: 'static/icon.png',
+			iconUrl: 'static/icon256.png',
 			duration: 5000
 		};
 
