@@ -1,12 +1,15 @@
-v0.0.3
+FUTURE FEATURES
 - popup with controls
 - add/remove track from collection
-
-v0.0.2
+- optionaly start to play user audios if top player is unavailable
 - finaly fix multitab behaviour
+- add status to notification
+
+v0.0.2 - CURRENT
+* improve multitab behaviour
 * fix icons
 
-v0.0.1 - CURRENT
+v0.0.1
 * play/pause, next, prev and info hotkeys
 * notification on track change
 * activate chrome tab with current vk page on notification click
