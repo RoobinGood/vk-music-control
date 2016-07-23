@@ -71,6 +71,7 @@ chrome.runtime.onMessage.addListener(
 			sendResponse({
 				command: 'info',
 				type: 'response',
+				result: true,
 				data: player.getTrack()
 			});
 		} else {
@@ -78,9 +79,7 @@ chrome.runtime.onMessage.addListener(
 				sendResponse({
 					command: request.command,
 					type: 'response',
-					data: {
-						result: !err
-					}
+					result: !err
 				});
 			});
 		}
@@ -103,6 +102,7 @@ window.onload = function() {
 				{
 					command: 'info',
 					type: 'response',
+					result: true,
 					data: track
 				}
 			);
@@ -113,7 +113,7 @@ window.onload = function() {
 	}, 300);
 };
 
-console.info('vk-music-control inited');
+console.info('vk-music-control started');
 chrome.runtime.sendMessage(
 	chrome.runtime.id,
 	{
@@ -121,6 +121,6 @@ chrome.runtime.sendMessage(
 		type: 'request'
 	},
 	function(response) {
-		console.log('tab id', response.data.info.id);
+		console.info('tab id', response.data.info.id);
 	}
 );

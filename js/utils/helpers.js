@@ -22,6 +22,7 @@ define('helpers', [
 					return wrongTabs.indexOf(item.id) === -1;
 				}
 			}, function(tabId) {
+				console.log('try', tabId);
 				if (!tabId) {
 					return callback(null);
 				}
@@ -30,9 +31,9 @@ define('helpers', [
 					id: tabId,
 					command: command
 				}, function(response) {
-					// console.log(tabId, response);
+					console.log('response', response.result);
 
-					if (response.data.result) {
+					if (response.result) {
 						callback(response);
 					} else {
 						wrongTabs.push(tabId);
