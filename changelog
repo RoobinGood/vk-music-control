@@ -1,6 +1,10 @@
-v0.0.2
+v0.0.3
 - popup with controls
 - add/remove track from collection
+
+v0.0.2
+- finaly fix multitab behaviour
+* fix icons
 
 v0.0.1 - CURRENT
 * play/pause, next, prev and info hotkeys

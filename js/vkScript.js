@@ -6,21 +6,38 @@ var Player = function() {
 		next: 'top_audio_player_next'
 	};
 
-	this.clickButton = function(button) {
+	this.clickButton = function(button, callback) {
 		if (!this.buttons[button]) {
-			throw new Error('There is now such button:', button);
+			return callback({
+				error: 'Button is not exists',
+				target: button
+			});
+		}
+
+		var playerEl = document.getElementsByClassName('top_audio_player_enabled');
+
+		if (!playerEl || !playerEl.length) {
+			console.log('Player is unavailable');
+			return callback({
+				error: 'Player is unavailable'
+			});
 		}
 
 		var buttonEls = document.getElementsByClassName(this.buttons[button]);
-		if (buttonEls && buttonEls.length) {
-			buttonEls[0].click();
-		} else {
+		if (!buttonEls || !buttonEls.length) {
 			console.log('Button', button, 'unavailable');
+			return callback({
+				error: 'Button is unavailable',
+				target: button
+			});
 		}
+
+		buttonEls[0].click();
+		callback();
 	};
 
-	this.execute = function(command) {
-		this.clickButton(command);
+	this.execute = function(command, callback) {
+		this.clickButton(command, callback);
 	};
 
 	this.getTrack = function() {
@@ -48,7 +65,7 @@ var player = new Player();
 
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
-		console.log('receive:', request.command);
+		console.log('receive:', request.type, request.command);
 
 		if (request.command === 'info') {
 			sendResponse({
@@ -57,7 +74,15 @@ chrome.runtime.onMessage.addListener(
 				data: player.getTrack()
 			});
 		} else {
-			player.execute(request.command);
+			player.execute(request.command, function(err) {
+				sendResponse({
+					command: request.command,
+					type: 'response',
+					data: {
+						result: !err
+					}
+				});
+			});
 		}
 	}
 );
@@ -82,8 +107,20 @@ window.onload = function() {
 				}
 			);
 
-			console.log(track);
+			// console.log(track);
 			currentTrack = track;
 		}
 	}, 300);
 };
+
+console.info('vk-music-control inited');
+chrome.runtime.sendMessage(
+	chrome.runtime.id,
+	{
+		command: 'getTabInfo',
+		type: 'request'
+	},
+	function(response) {
+		console.log('tab id', response.data.info.id);
+	}
+);

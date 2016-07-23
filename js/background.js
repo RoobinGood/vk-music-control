@@ -11,7 +11,7 @@ require([
 		prev: helpers.defaultCommandHandler,
 		info: function() {
 			helpers.sendCommand('info', function(response) {
-				console.log(response);
+				console.log('info response', response);
 				if (!response.data) {
 					return;
 				}
@@ -33,14 +33,22 @@ require([
 	// handle track change message from vk tab
 	chrome.runtime.onMessage.addListener(
 		function(request, sender, sendResponse) {
-			console.log('receive:', request.command);
+			console.log('receive:', request.type, request.command);
 
 			if (request.command === 'info') {
 				notificationManager.show({
 					title: request.data.artist,
 					message: request.data.track
 				});
-			}
+			} else if (request.command === 'getTabInfo') {
+				sendResponse({
+					command: 'getTabInfo',
+					type: 'response',
+					data: {
+						info: sender.tab
+					}
+				});
+			} 
 		}
 	);
 
