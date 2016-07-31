@@ -5,6 +5,9 @@ FUTURE FEATURES
 - finaly fix multitab behaviour
 - add status to notification
 
+v0.0.3
+* open current or new vk tab on popup button click
+
 v0.0.2 - CURRENT
 * improve multitab behaviour
 * fix icons

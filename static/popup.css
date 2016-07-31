@@ -1,10 +1,12 @@
 body {
+	width: 0px;
+	height: 0px;
+	margin: 0px;
+	padding: 0px;
+	background-color: #efefef;
 	font-size: 100%;
 	color: #222;
-	width: 250px;
-	background-color: #efefef;
 	font-weight: 300;
-	margin: 0px;
 }
 
 
